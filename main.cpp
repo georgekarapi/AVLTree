@@ -1,5 +1,5 @@
 #include <iostream>
-#include "tree.h"
+#include "headers/tree.h"
 using namespace std;
 
 int main() {
