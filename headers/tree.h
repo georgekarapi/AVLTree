@@ -5,15 +5,17 @@ struct node{
     node *parent = NULL;
 };
 class Tree{
-private:
+public:
     node *root = NULL;
     void print(node *leaf){ if(leaf == NULL){ return;}print(leaf->left);printf("%d \n",leaf->value);print(leaf->right); };
     node *smallest(node *leaf);
-    node *search(int key);
-public:
     void insert(int key);//Insert
     void print(){ print(root); };
     void del(int key);
+    int getHeight(node*);
+    node *search(int key);
+    int isBalanced(node *leaf);
+    void reconstruct(node *leaf);
 };
 void Tree::insert(int key){
     node *leaf,*leaf2;
@@ -46,8 +48,40 @@ void Tree::insert(int key){
                 break;
             }
         }
+        do{
+            reconstruct(leaf2);
+            if(leaf2->parent == NULL) break;
+            leaf2 = leaf2->parent;
+        }while(leaf != root);
     }
 }
+
+int Tree::getHeight(node *leaf) {
+    if(leaf == NULL){
+        return 0;
+    }else{
+        return 1 + (getHeight(leaf->left)>getHeight(leaf->right)?getHeight(leaf->left):getHeight(leaf->right));
+    }
+}
+
+int Tree::isBalanced(node *leaf) {
+    return (getHeight(leaf->right) - getHeight(leaf->left));
+}
+
+void Tree::reconstruct(node *leaf) {
+    if(getHeight(leaf->right) - getHeight(leaf->left) > 1) {//
+        if(getHeight(leaf->right->right) - getHeight(leaf->right->left) > 0) {//Left Rotation
+            node *temp = leaf->right;
+            leaf->right->parent = leaf->parent;
+            if(temp->left !=NULL) temp->left->parent = leaf;
+            leaf->right = leaf->right->left;
+            leaf->parent = temp;
+            temp->left = leaf;
+            if(leaf == root) root = temp;
+        }
+    }
+}
+
 node *Tree::smallest(node *leaf){
     while(leaf->left != NULL){
         leaf = leaf->left;
