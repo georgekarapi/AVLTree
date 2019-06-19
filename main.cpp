@@ -4,12 +4,12 @@ using namespace std;
 
 int main() {
     Tree tree;
-    tree.insert(14);
-    tree.insert(16);
+    tree.insert(10);
+    tree.insert(5);
     tree.insert(20);
-    tree.insert(9);
-    tree.insert(15);
-    tree.insert(19);
+
+    tree.insert(7);
+    tree.del(20);
     cout << tree.root->value << endl;
     //tree.print();
     return 0;

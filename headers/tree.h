@@ -14,7 +14,6 @@ public:
     void del(int key);
     int getHeight(node*);
     node *search(int key);
-    int isBalanced(node *leaf);
     void reconstruct(node *leaf);
 };
 void Tree::insert(int key){
@@ -64,10 +63,6 @@ int Tree::getHeight(node *leaf) {
     }
 }
 
-int Tree::isBalanced(node *leaf) {
-    return (getHeight(leaf->right) - getHeight(leaf->left));
-}
-
 void Tree::reconstruct(node *leaf) {
     if(getHeight(leaf->right) - getHeight(leaf->left) > 1) {//
         if(getHeight(leaf->right->right) - getHeight(leaf->right->left) > 0) {//Left Rotation
@@ -78,6 +73,44 @@ void Tree::reconstruct(node *leaf) {
             leaf->parent = temp;
             temp->left = leaf;
             if(leaf == root) root = temp;
+        }else if(getHeight(leaf->right->right) - getHeight(leaf->right->left) < 0) {
+            node *temp = leaf->right;
+            node *temp2 = temp->left;
+            if(temp2->left != NULL) leaf->right = temp2->left;            
+            leaf->right->parent = leaf;
+            if(temp2->right != NULL) temp->left = temp2->right;
+            if(temp2->right != NULL) temp2->right->parent = temp;
+            temp2->left = temp;
+            temp2->parent = leaf->parent;
+            temp2->left = leaf;
+            leaf->parent = temp2;
+            temp2->right = temp;
+            temp->parent = temp2;
+            if(leaf == root) root = temp2;
+        }
+    }else if(getHeight(leaf->right) - getHeight(leaf->left) < 1) {//
+        if(getHeight(leaf->left->left) - getHeight(leaf->left->right) > 0) {//Left Rotation
+            node *temp = leaf->left;
+            leaf->left->parent = leaf->parent;
+            if(temp->right !=NULL) temp->right->parent = leaf;
+            leaf->left = leaf->left->right;
+            leaf->parent = temp;
+            temp->right = leaf;
+            if(leaf == root) root = temp;
+        }else if(getHeight(leaf->left->left) - getHeight(leaf->left->right) < 0) {
+            node *temp = leaf->left;
+            node *temp2 = temp->right;
+            if(temp2->right != NULL) leaf->left = temp2->right;            
+            leaf->left->parent = leaf;
+            if(temp2->left != NULL) temp->right = temp2->left;
+            if(temp2->left != NULL) temp2->left->parent = temp;
+            temp2->right = temp;
+            temp2->parent = leaf->parent;
+            temp2->right = leaf;
+            leaf->parent = temp2;
+            temp2->left = temp;
+            temp->parent = temp2;
+            if(leaf == root) root = temp2;
         }
     }
 }
@@ -124,6 +157,11 @@ void Tree::del(int key) {
                     delete leaf;
                 }
             }
+            do{
+                reconstruct(l2);
+                if(l2->parent == NULL) break;
+                l2 = l2->parent;
+            }while(leaf != root);
         } else {
             printf("There is no Tree\n");
         }
