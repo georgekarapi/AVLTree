@@ -2,19 +2,14 @@
 #include "headers/tree.h"
 
 #include "libs/Graph.h"
+#include "libs/hashtable.h"
+#include "libs/minheap.h"
+#include "libs/maxheap.h"
 using namespace std;
 
 int main() {
     Graph graph;
-    graph.addEdge(1,2);
-    graph.addEdge(2,0);
-
-    graph.addEdge(2,1);
-    graph.addEdge(2,1);
-    graph.addEdge(2,1);
-    graph.addEdge(2,1);
-    graph.addEdge(2,0);
-    graph.addEdge(0,1);
+    graph.addEdge(2, 2);
     graph.print();
     return 0;
 }

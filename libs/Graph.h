@@ -9,19 +9,27 @@
 
 #include <vector>
 
+using namespace std;
+
 struct Edge{
     int value;
-    std::vector<int> links;
+    vector<Edge *> neighbors;
 };
 
 class Graph{
 private:
-    std::vector<Edge> graphTable;
-    int searchEdge(int edge);
-    int searchLink(int edge, int link);
+    vector<Edge *> edges;
+
+    int search(vector<int> arr, int value);
+
+    int search(vector<Edge *> arr, int value);
+
+    bool exists(vector<Edge *> path, Edge *el);
 public:
     int addEdge(int x, int y);
     int removeEdge(int x, int y);
     void print();
     void getSize();
+
+    void mst();
 };
