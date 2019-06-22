@@ -1,16 +1,20 @@
 #include <iostream>
 #include "headers/tree.h"
+
+#include "libs/Graph.h"
 using namespace std;
 
 int main() {
-    Tree tree;
-    tree.insert(10);
-    tree.insert(5);
-    tree.insert(20);
+    Graph graph;
+    graph.addEdge(1,2);
+    graph.addEdge(2,0);
 
-    tree.insert(7);
-    tree.del(20);
-    cout << tree.root->value << endl;
-    //tree.print();
+    graph.addEdge(2,1);
+    graph.addEdge(2,1);
+    graph.addEdge(2,1);
+    graph.addEdge(2,1);
+    graph.addEdge(2,0);
+    graph.addEdge(0,1);
+    graph.print();
     return 0;
 }
